@@ -1,12 +1,16 @@
-import {useState} from 'react';
-import ReactMapGL, {Popup, Source, Layer} from 'react-map-gl';
+import { useState } from 'react';
+import ReactMapGL, { Popup, Source, Layer } from 'react-map-gl';
 import Pins from './Pins';
 import CityInfo from './CityInfo';
 import CITIES from './cities.json';
+import booleanIntersects from '@turf/boolean-intersects';
+import centroid from '@turf/centroid';
+import destination from '@turf/destination';
+import { point, featureCollection } from '@turf/helpers';
 
 const REACT_APP_MAPBOX_ACCESS_TOKEN = 'pk.eyJ1IjoiYnJhZGxleWJvc3NhcmR1ZiIsImEiOiJja3NoeWR2ODkxemFoMnBwYTM1emhhYmU4In0.etmCrrx1r0vece_U8jvwFw';
 
-function Map() {
+function Map (props) {
 
   const [viewport, setViewport] = useState({
     latitude: 37.7577,
@@ -15,6 +19,18 @@ function Map() {
   });
 
   const [popupInfo, setPopupInfo] = useState(null);
+
+  // map the CITIES into geojson so our utility lib can handle them
+  const cityGeoms = CITIES.map(({ latitude, longitude }) => point([longitude, latitude]))
+  const cityCentroid = centroid(featureCollection(cityGeoms))
+
+  //get dimensions of bbox from cardinal directions
+  const getDim = bearing => destination(cityCentroid, props.sideLength / 2, bearing).geometry.coordinates
+
+  const minX = getDim(270)[0]
+  const minY = getDim(180)[1]
+  const maxX = getDim(90)[0]
+  const maxY = getDim(0)[1]
 
   // this geojson polygon can be used to visualize the boundaries of the bounding box
   const geojson = {
@@ -28,24 +44,24 @@ function Map() {
           coordinates: [
             [
               [
-                -123.837890625,
-                36.35052700542763
+                minX,
+                minY
               ],
               [
-                -112.32421875,
-                36.35052700542763
+                maxX,
+                minY
               ],
               [
-                -112.32421875,
-                43.61221676817573
+                maxX,
+                maxY
               ],
               [
-                -123.837890625,
-                43.61221676817573
+                minX,
+                maxY
               ],
               [
-                -123.837890625,
-                36.35052700542763
+                minX,
+                minY
               ]
             ]
           ]
@@ -63,6 +79,14 @@ function Map() {
     }
   };
 
+  // set up a reusable spatial filter func to minimize repetition
+  const spatialFilter = (city) => booleanIntersects(point([city.longitude, city.latitude]), geojson.features[0].geometry)
+
+  // Filter the cities based on out input params. Always filter with bbox but only filter with the name if one is entered.
+  const filteredCities = props.cityFilter
+    ? CITIES.filter(city => city.name.toLowerCase().includes(props.cityFilter.toLowerCase()) && spatialFilter(city))
+    : CITIES.filter(spatialFilter)
+
   return (
       <ReactMapGL
         {...viewport}
@@ -73,7 +97,7 @@ function Map() {
         onViewportChange={(viewport) => setViewport(viewport)}
       >
 
-      <Pins data={CITIES} onClick={setPopupInfo} />
+      <Pins data={filteredCities} onClick={setPopupInfo} />
 
       <Source id="my-data" type="geojson" data={geojson}>
         <Layer {...layerStyle} />
