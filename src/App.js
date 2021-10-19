@@ -1,15 +1,16 @@
-import 'mapbox-gl/dist/mapbox-gl.css';
-import Map from './Map';
+import * as React from 'react'
+import 'mapbox-gl/dist/mapbox-gl.css'
+import Map from './Map'
 import Panel from './Panel'
-import './App.css';
+import './App.css'
 
-function App() {
+function App () {
   return (
     <div className="App">
       <Map />
       <Panel />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

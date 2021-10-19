@@ -1,8 +1,8 @@
-import * as React from 'react';
+import * as React from 'react'
 
-function CityInfo(props) {
-  const {info} = props;
-  const displayName = `${info.name}, ${info.state}`;
+function CityInfo (props) {
+  const { info } = props
+  const displayName = `${info.name}, ${info.state}`
 
   return (
     <div>
@@ -17,7 +17,7 @@ function CityInfo(props) {
       </div>
       <img width={240} alt="" src={info.image} />
     </div>
-  );
+  )
 }
 
-export default React.memo(CityInfo);
+export default React.memo(CityInfo)

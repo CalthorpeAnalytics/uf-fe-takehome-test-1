@@ -1,8 +1,8 @@
-import * as React from 'react';
+import * as React from 'react'
 
-function Panel(props) {
-  const sideLength = 50;
-  const cityName = '';
+function Panel (props) {
+  const sideLength = 50
+  const cityName = ''
 
   return (
     <div className="panel">
@@ -24,7 +24,7 @@ function Panel(props) {
       </div>
 
     </div>
-  );
+  )
 }
 
-export default React.memo(Panel);
+export default React.memo(Panel)

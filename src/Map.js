@@ -1,30 +1,29 @@
-import {useState} from 'react';
-import ReactMapGL, {Popup, Source, Layer} from 'react-map-gl';
-import Pins from './Pins';
-import CityInfo from './CityInfo';
-import CITIES from './cities.json';
+import { useState } from 'react'
+import ReactMapGL, { Popup, Source, Layer } from 'react-map-gl'
+import Pins from './Pins'
+import CityInfo from './CityInfo'
+import CITIES from './cities.json'
 
-const REACT_APP_MAPBOX_ACCESS_TOKEN = 'pk.eyJ1IjoiYnJhZGxleWJvc3NhcmR1ZiIsImEiOiJja3NoeWR2ODkxemFoMnBwYTM1emhhYmU4In0.etmCrrx1r0vece_U8jvwFw';
+const REACT_APP_MAPBOX_ACCESS_TOKEN = 'pk.eyJ1IjoiYnJhZGxleWJvc3NhcmR1ZiIsImEiOiJja3NoeWR2ODkxemFoMnBwYTM1emhhYmU4In0.etmCrrx1r0vece_U8jvwFw'
 
-function Map() {
-
+function Map () {
   const [viewport, setViewport] = useState({
     latitude: 37.7577,
     longitude: -102.4376,
-    zoom: 3 
-  });
+    zoom: 3
+  })
 
-  const [popupInfo, setPopupInfo] = useState(null);
+  const [popupInfo, setPopupInfo] = useState(null)
 
   // this geojson polygon can be used to visualize the boundaries of the bounding box
   const geojson = {
-    type: "FeatureCollection",
+    type: 'FeatureCollection',
     features: [
       {
-        type: "Feature",
+        type: 'Feature',
         properties: {},
         geometry: {
-          type: "Polygon",
+          type: 'Polygon',
           coordinates: [
             [
               [
@@ -52,8 +51,8 @@ function Map() {
         }
       }
     ]
-  };
-  
+  }
+
   const layerStyle = {
     id: 'outline',
     type: 'line',
@@ -61,7 +60,7 @@ function Map() {
       'line-color': '#007cbf',
       'line-width': 3
     }
-  };
+  }
 
   return (
       <ReactMapGL
@@ -93,7 +92,7 @@ function Map() {
         </Popup>
       )}
       </ReactMapGL>
-  );
- }
+  )
+}
 
- export default Map;
+export default Map
