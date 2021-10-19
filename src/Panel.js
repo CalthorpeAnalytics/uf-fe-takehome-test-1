@@ -1,25 +1,30 @@
-import * as React from 'react'
+import React from 'react'
 
-function Panel (props) {
-  const sideLength = 50
-  const cityName = ''
-
+function Panel ({
+  bounds,
+  cityFilter,
+  onBoundsChange,
+  onCityFilterChange
+}) {
   return (
     <div className="panel">
 
       <div className="input">
         <label>Bounding Square Side Length</label>
         <input
+          onChange={e => onBoundsChange(Number(e.target.value))}
           type="number"
-          value={sideLength}
+          value={bounds}
+          min='0'
         />
       </div>
 
       <div className="input">
         <label>City Name Filter</label>
         <input
+          onChange={e => onCityFilterChange(e.target.value)}
           type="string"
-          value={cityName}
+          value={cityFilter}
         />
       </div>
 
