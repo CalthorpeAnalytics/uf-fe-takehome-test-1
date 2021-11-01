@@ -1,16 +1,20 @@
-import * as React from 'react';
+import * as React from "react";
 
 function Panel(props) {
-  const sideLength = 50;
-  const cityName = '';
+  const {
+    sideLength,
+    handleSideLengthChange,
+    cityNameFilter,
+    handleCityNameFilterChange,
+  } = props;
 
   return (
     <div className="panel">
-
       <div className="input">
         <label>Bounding Square Side Length</label>
         <input
           type="number"
+          onChange={handleSideLengthChange}
           value={sideLength}
         />
       </div>
@@ -19,10 +23,10 @@ function Panel(props) {
         <label>City Name Filter</label>
         <input
           type="string"
-          value={cityName}
+          value={cityNameFilter}
+          onChange={handleCityNameFilterChange}
         />
       </div>
-
     </div>
   );
 }
