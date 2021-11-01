@@ -5,12 +5,10 @@ import Panel from "./Panel";
 import { getBoundingBox, getVisibleCities } from "../utils/geometricUtils";
 
 const MapContainer = () => {
-  const [sideLength, setSideLength] = useState(50);
+  const [sideLength, setSideLength] = useState(null);
   const [cityNameFilter, setCityNameFilter] = useState("");
-  const [boundingBox, setBoundingBox] = useState(getBoundingBox(sideLength));
-  const [cities, setCities] = useState(
-    getVisibleCities(boundingBox, cityNameFilter)
-  );
+  const [boundingBox, setBoundingBox] = useState(null);
+  const [cities, setCities] = useState([]);
 
   const handleSideLengthChange = (event) => {
     setSideLength(event.target.value);
@@ -21,11 +19,19 @@ const MapContainer = () => {
   };
 
   useEffect(() => {
-    setBoundingBox(getBoundingBox(sideLength));
+    setSideLength(50);
+  }, []);
+
+  useEffect(() => {
+    if (sideLength > 0) {
+      setBoundingBox(getBoundingBox(sideLength));
+    }
   }, [sideLength]);
 
   useEffect(() => {
-    setCities(getVisibleCities(boundingBox, cityNameFilter));
+    if (boundingBox) {
+      setCities(getVisibleCities(boundingBox, cityNameFilter));
+    }
   }, [boundingBox, cityNameFilter]);
 
   return (
