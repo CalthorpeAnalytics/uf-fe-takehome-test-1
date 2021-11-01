@@ -14,6 +14,7 @@ function Panel(props) {
         <label>Bounding Square Side Length</label>
         <input
           type="number"
+          min="1"
           onChange={handleSideLengthChange}
           value={sideLength}
         />
