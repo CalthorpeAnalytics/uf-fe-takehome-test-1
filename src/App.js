@@ -1,13 +1,11 @@
-import 'mapbox-gl/dist/mapbox-gl.css';
-import Map from './Map';
-import Panel from './Panel'
-import './App.css';
+import "mapbox-gl/dist/mapbox-gl.css";
+import "./App.css";
+import MapContainer from "./components/MapContainer";
 
 function App() {
   return (
     <div className="App">
-      <Map />
-      <Panel />
+      <MapContainer />
     </div>
   );
 }
