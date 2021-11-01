@@ -1,7 +1,7 @@
-import 'mapbox-gl/dist/mapbox-gl.css';
-import Map from './Map';
-import Panel from './Panel'
-import './App.css';
+import "mapbox-gl/dist/mapbox-gl.css";
+import Map from "./components/Map";
+import Panel from "./components/Panel";
+import "./App.css";
 
 function App() {
   return (
