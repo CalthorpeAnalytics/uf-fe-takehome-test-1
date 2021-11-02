@@ -1,42 +1,36 @@
-import { useState, useEffect } from "react";
+import { useState, useCallback, useMemo } from "react";
 import * as React from "react";
 import Map from "./Map";
 import Panel from "./Panel";
 import { getBoundingBox, getVisibleCities } from "../utils/geometricUtils";
 
 const MapContainer = () => {
-  const [sideLength, setSideLength] = useState(null);
+  const [sideLength, setSideLength] = useState(50);
   const [cityNameFilter, setCityNameFilter] = useState("");
-  const [boundingBox, setBoundingBox] = useState(null);
-  const [cities, setCities] = useState([]);
 
-  const handleSideLengthChange = (event) => {
+  const handleSideLengthChange = useCallback((event) => {
     setSideLength(event.target.value);
-  };
-
-  const handleCityNameFilterChange = (event) => {
-    setCityNameFilter(event.target.value);
-  };
-
-  useEffect(() => {
-    setSideLength(50);
   }, []);
 
-  useEffect(() => {
+  const handleCityNameFilterChange = useCallback((event) => {
+    setCityNameFilter(event.target.value);
+  }, []);
+
+  const boundingBox = useMemo(() => {
     if (sideLength > 0) {
-      setBoundingBox(getBoundingBox(sideLength));
+      return getBoundingBox(sideLength);
     }
   }, [sideLength]);
 
-  useEffect(() => {
+  const visibleCities = useMemo(() => {
     if (boundingBox) {
-      setCities(getVisibleCities(boundingBox, cityNameFilter));
+      return getVisibleCities(boundingBox, cityNameFilter);
     }
   }, [boundingBox, cityNameFilter]);
 
   return (
     <>
-      <Map cities={cities} boundingBox={boundingBox} />
+      <Map cities={visibleCities} boundingBox={boundingBox} />
       <Panel
         sideLength={sideLength}
         handleSideLengthChange={handleSideLengthChange}
